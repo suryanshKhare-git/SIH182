@@ -90,9 +90,7 @@ export class BlockchainIntelligenceService {
     walletAddress: string,
     network: Network = 'Ethereum'
   ): Promise<WalletAnalysisResult> {
-    const response = await fetch(
-      'http://localhost:8000/api/v1/analyze',
-      {
+    const response = await fetch('https://sih182-backend-l0q2.onrender.com/api/v1/analyze', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
