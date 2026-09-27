@@ -18,7 +18,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Shield,
-  UserCheck
+  UserCheck,
+  Globe
 } from 'lucide-react';
 import { useInvestigation } from '@/context/InvestigationContext';
 import { cn } from '@/utils/cn';
@@ -28,6 +29,7 @@ const NAV_ITEMS = [
   { name: 'Investigations', href: '/investigations', icon: FolderGit2 },
   { name: 'Wallet Explorer', href: '/wallet-explorer', icon: Search },
   { name: 'Transaction Paths', href: '/transaction-paths', icon: GitFork },
+  { name: 'Cross-Chain Tracking', href: '/cross-chain', icon: Globe },
   { name: 'VASP Intelligence', href: '/vasp-intelligence', icon: Building2 },
   { name: 'Risk Analysis', href: '/risk-analysis', icon: ShieldAlert },
   { name: 'Evidence', href: '/evidence', icon: FileCheck2 },
