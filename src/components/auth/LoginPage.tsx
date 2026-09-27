@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
 import {
@@ -21,6 +22,7 @@ import {
 export function LoginPage() {
   const { login } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const router = useRouter();
 
   const [investigatorId, setInvestigatorId] = useState('');
   const [pin, setPin] = useState('');
@@ -37,6 +39,8 @@ export function LoginPage() {
     if (!result.success) {
       setErrorMessage(result.error || 'Invalid Investigator ID or PIN.');
       setIsSubmitting(false);
+    } else {
+      router.push('/');
     }
   };
 

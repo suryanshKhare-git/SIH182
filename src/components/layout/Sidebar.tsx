@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   FolderGit2,
@@ -43,6 +43,7 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const { currentCase } = useInvestigation();
   const { user, logout } = useAuth();
@@ -197,7 +198,10 @@ export function Sidebar() {
                 </div>
               </div>
               <button
-                onClick={logout}
+                onClick={() => {
+                  logout();
+                  router.push('/');
+                }}
                 title="Logout / End Session"
                 className="p-1.5 rounded-md hover:bg-rose-100 dark:hover:bg-rose-950/60 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors shrink-0 cursor-pointer"
               >
@@ -214,7 +218,10 @@ export function Sidebar() {
               </span>
             </div>
             <button
-              onClick={logout}
+              onClick={() => {
+                logout();
+                router.push('/');
+              }}
               className="w-7 h-7 rounded-full bg-blue-600 hover:bg-rose-600 text-white flex items-center justify-center font-bold text-xs shadow-xs cursor-pointer transition-colors"
               title={`${user?.name || 'Inv. S. Khare'} (${user?.id || 'DEMO-26182'}) · Click to Logout`}
             >

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 import { useInvestigation } from '@/context/InvestigationContext';
 import { useAuth } from '@/context/AuthContext';
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react';
 
 export function Topbar() {
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
   const {
@@ -235,6 +237,7 @@ export function Topbar() {
                   onClick={() => {
                     setShowProfileMenu(false);
                     logout();
+                    router.push('/');
                   }}
                   className="w-full flex items-center gap-2 px-2.5 py-2 rounded text-xs font-mono font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-colors cursor-pointer text-left"
                 >
