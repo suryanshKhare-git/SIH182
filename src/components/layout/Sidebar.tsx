@@ -19,9 +19,11 @@ import {
   ChevronRight,
   Shield,
   UserCheck,
-  Globe
+  Globe,
+  LogOut
 } from 'lucide-react';
 import { useInvestigation } from '@/context/InvestigationContext';
+import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/utils/cn';
 
 const NAV_ITEMS = [
@@ -43,6 +45,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const { currentCase } = useInvestigation();
+  const { user, logout } = useAuth();
 
   return (
     <aside
@@ -179,18 +182,27 @@ export function Sidebar() {
             </div>
 
             {/* User Profile */}
-            <div className="flex items-center gap-2.5 pt-1">
-              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
-                <UserCheck className="w-4 h-4" />
+            <div className="flex items-center justify-between pt-1">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                  <UserCheck className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                    {user?.name || 'Inv. S. Khare'}
+                  </span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono truncate">
+                    {user?.id || 'DEMO-26182'}
+                  </span>
+                </div>
               </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
-                  Inv. S. Khare
-                </span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono truncate">
-                  Cyber Forensics Unit #842
-                </span>
-              </div>
+              <button
+                onClick={logout}
+                title="Logout / End Session"
+                className="p-1.5 rounded-md hover:bg-rose-100 dark:hover:bg-rose-950/60 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors shrink-0 cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         ) : (
@@ -201,12 +213,13 @@ export function Sidebar() {
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
               </span>
             </div>
-            <div
-              className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-xs cursor-pointer"
-              title="Inv. S. Khare · Cyber Forensics Unit #842"
+            <button
+              onClick={logout}
+              className="w-7 h-7 rounded-full bg-blue-600 hover:bg-rose-600 text-white flex items-center justify-center font-bold text-xs shadow-xs cursor-pointer transition-colors"
+              title={`${user?.name || 'Inv. S. Khare'} (${user?.id || 'DEMO-26182'}) · Click to Logout`}
             >
               <UserCheck className="w-3.5 h-3.5" />
-            </div>
+            </button>
           </div>
         )}
       </div>

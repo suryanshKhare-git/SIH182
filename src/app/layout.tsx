@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { AuthProvider } from '@/context/AuthContext';
 import { InvestigationProvider } from '@/context/InvestigationContext';
 import { AppLayout } from '@/components/layout/AppLayout';
 
@@ -57,9 +58,11 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
         <ThemeProvider>
-          <InvestigationProvider>
-            <AppLayout>{children}</AppLayout>
-          </InvestigationProvider>
+          <AuthProvider>
+            <InvestigationProvider>
+              <AppLayout>{children}</AppLayout>
+            </InvestigationProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

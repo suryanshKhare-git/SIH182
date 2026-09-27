@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useInvestigation } from '@/context/InvestigationContext';
+import { useAuth } from '@/context/AuthContext';
 import { Network } from '@/types/investigation';
 import {
   Search,
@@ -12,11 +13,13 @@ import {
   Bell,
   ShieldCheck,
   ChevronDown,
-  FolderOpen
+  FolderOpen,
+  LogOut
 } from 'lucide-react';
 
 export function Topbar() {
   const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
   const {
     currentCase,
     allCases,
@@ -31,6 +34,7 @@ export function Topbar() {
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [showCaseSelector, setShowCaseSelector] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const networks: Network[] = ['Ethereum', 'Bitcoin', 'Polygon', 'BNB Chain'];
 
@@ -188,14 +192,58 @@ export function Topbar() {
 
         <div className="h-4 w-px bg-slate-300 dark:bg-slate-700 mx-0.5 sm:mx-1 shrink-0" />
 
-        <div className="flex items-center gap-2 pl-0.5 shrink-0">
-          <div className="w-7 h-7 rounded-full bg-blue-700 dark:bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
-            <ShieldCheck className="w-4 h-4" />
-          </div>
-          <div className="hidden xl:block text-left text-xs leading-none">
-            <div className="font-bold text-slate-800 dark:text-slate-200">INV. AGENT #842</div>
-            <div className="text-[10px] text-slate-400 font-mono">CYBER FORENSICS UNIT</div>
-          </div>
+        <div className="relative shrink-0">
+          <button
+            onClick={() => setShowProfileMenu(!showProfileMenu)}
+            className="flex items-center gap-2 pl-0.5 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            title="Investigator Profile & Security Actions"
+          >
+            <div className="w-7 h-7 rounded-full bg-blue-700 dark:bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div className="hidden xl:block text-left text-xs leading-none">
+              <div className="font-bold text-slate-800 dark:text-slate-200">
+                {user?.name || 'INV. S. KHARE'}
+              </div>
+              <div className="text-[10px] text-slate-400 font-mono">
+                {user?.id || 'DEMO-26182'}
+              </div>
+            </div>
+            <ChevronDown className="w-3 h-3 text-slate-400 hidden xl:block" />
+          </button>
+
+          {showProfileMenu && (
+            <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl p-3 z-50 animate-in fade-in duration-150">
+              <div className="pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800">
+                <div className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                  {user?.name || 'Inv. S. Khare'}
+                </div>
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
+                  ID: <span className="font-semibold text-blue-600 dark:text-blue-400">{user?.id || 'DEMO-26182'}</span>
+                </div>
+                <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                  {user?.role || 'Lead Blockchain Forensics Investigator'}
+                </div>
+                <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-[10px] font-mono border border-emerald-200 dark:border-emerald-800">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <span>Session Active · Level 4</span>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <button
+                  onClick={() => {
+                    setShowProfileMenu(false);
+                    logout();
+                  }}
+                  className="w-full flex items-center gap-2 px-2.5 py-2 rounded text-xs font-mono font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-colors cursor-pointer text-left"
+                >
+                  <LogOut className="w-4 h-4 shrink-0" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </header>
